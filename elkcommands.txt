@@ -6,3 +6,8 @@ http://localhost:9200/_nodes/stats/os,process
 http://localhost:9200/_nodes/127.0.0.1/stats/process
 http://localhost:9200/_cluster/health?pretty=true
 
+#create communication using environment to send data from logstash to elastic
+logstash -e  "input { stdin { } } output { stdout {} }"
+
+
+
