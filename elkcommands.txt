@@ -1,0 +1,6 @@
+# it will index statistics
+http://localhost:9200/_nodes/stats/indices
+#os,process statistics
+http://localhost:9200/_nodes/stats/os,process
+#process statistics
+http://localhost:9200/_nodes/127.0.0.1/stats/process
