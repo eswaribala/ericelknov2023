@@ -10,6 +10,7 @@ http://localhost:9200/_cluster/health?pretty=true
 logstash -e  "input { stdin { } } output { stdout {} }"
 logstash -f "path\filename" -e
 
-
+# to view index details
+http://localhost:9200/_cat/indices?v
 
 
