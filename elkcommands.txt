@@ -12,5 +12,8 @@ logstash -f "path\filename" -e
 
 # to view index details
 http://localhost:9200/_cat/indices?v
+#to rerieve all the documents from the index
+GET index_name/_search
+
 
 
