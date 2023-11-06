@@ -8,6 +8,8 @@ http://localhost:9200/_cluster/health?pretty=true
 
 #create communication using environment to send data from logstash to elastic
 logstash -e  "input { stdin { } } output { stdout {} }"
+logstash -f "path\filename" -e
+
 
 
 
