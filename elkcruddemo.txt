@@ -32,5 +32,14 @@ POST /products/_doc/1
   "expiry-date":"2024-12-12"
 }
 
+#delete document
+POST /orders/eric/1
+{
+  "productId":102,
+  "name":"laptop-samsung",
+  "cost":65000,
+  "expiry-date":"2026-12-12"
+}
 
+DELETE orders
 
