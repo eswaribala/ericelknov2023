@@ -1,0 +1,6 @@
+{"@timestamp":"2021-09-27T16:58:44.461Z","id":"2","message":"help me","@version":"1","source":"Medium","path":"D:/logstash configurations/configurations/log.json","host":"DESKTOP-55AGI0I","index":"12345"}
+{"@timestamp":"2021-09-27T16:58:44.430Z","id":"1","message":"issues","@version":"1","source":"Medium","path":"D:/logstash configurations/configurations/log.json","host":"DESKTOP-55AGI0I","index":"12345"}
+{"path":"D:/logstash configurations/configurations/log.json","host":"DESKTOP-55AGI0I","id":"2","source":"Medium","@timestamp":"2021-09-27T17:00:43.982Z","message":"help me","@version":"1","index":"12345"}
+{"path":"D:/logstash configurations/configurations/log.json","host":"DESKTOP-55AGI0I","id":"1","source":"Medium","@timestamp":"2021-09-27T17:00:43.951Z","message":"issues","@version":"1","index":"12345"}
+{"id":"1","@version":"1","host":"DESKTOP-55AGI0I","index":"12345","@timestamp":"2021-09-28T05:27:42.806Z","path":"D:/logstash configurations/configurations/log.json","message":"issues"}
+{"id":"2","@version":"1","host":"DESKTOP-55AGI0I","index":"12345","@timestamp":"2021-09-28T05:27:42.860Z","path":"D:/logstash configurations/configurations/log.json","message":"help me"}
