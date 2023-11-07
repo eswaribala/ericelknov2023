@@ -22,6 +22,20 @@ logstash-plugin list
 #add new plugin to logstash
 logstash-plugin install logstash-output-mongodb
 
+#business case --> integrate webapi,kafka , mysql, logstash and elastic
+
+Step1 1: Import Spring boot maven project
+Step2: Set Java Installed JRE to 11
+Step3: Install Lombok Plugin
+3a. Downlaod lombok.jar from maven repository
+3b. run java -jar lombokfilename.jar
+3c. Select eclipse exe file
+3d. Install or update lombok
+3e.quit lombok installer
+Step4: Restart Eclipse
+Step5: Check About Eclipse for installed Lombok Plugin
+Step6. Update Maven Project
+Step7: Change db name and password in properties file
 
 
 
