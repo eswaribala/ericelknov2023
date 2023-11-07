@@ -1,0 +1,28 @@
+#to check default template
+GET /_template
+
+#to check metric beat template
+GET /_template/metric_beat
+
+
+#create new template
+PUT /_index_template/rps_template
+{
+  "index_patterns" : ["rps*", "virt*"],
+  "priority" : 1,
+  "template": {
+    "settings" : {
+        "number_of_shards" : 2,
+        "number_of_replicas": 0
+    }
+  },
+  "version": 1.0
+}
+
+#check the template
+GET /_index_template/rps_template
+
+#create document with template
+PUT /rps_products
+#retrieve document
+GET /rps_products
