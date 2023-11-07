@@ -21,3 +21,16 @@ POST /products/_doc/1
 
 #retrieve document
 GET /products/_doc/1
+
+#replacing the document
+
+POST /products/_doc/1
+{
+  "productId":100,
+  "name":"laptop",
+  "cost":45000,
+  "expiry-date":"2024-12-12"
+}
+
+
+
