@@ -2,16 +2,18 @@ PUT /products
 {
   "settings": {
     "number_of_shards": 2,
-    "number_of_replicas": 2
+    "number_of_replicas": 1
+    
   }
 }
 
+GET products
+
 POST /products/_doc/1
 {
-  
-  "productId":1,
-  "productName":"Laptop",
-  "cost":40500 
- 
-
+  "productId":100,
+  "name":"laptop",
+  "cost":45000
 }
+
+GET /products/_doc/1
