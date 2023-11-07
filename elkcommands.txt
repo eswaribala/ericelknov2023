@@ -48,6 +48,11 @@ Create the Consumer
 docker exec -it 3c9e60ccac88  kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic  boaqueue --from-beginning
 #to check default index settings
 GET _all/_settings
+#check dynamic mapping details
+GET index_name/_mapping
+#check existing templates
+GET _template
+
 
 
 
