@@ -1,3 +1,11 @@
+Difference between version no and sequence no
+
+Version No --> Whenever document is updated counter will increase
+Seq No--> Whenever any operation happens on index counter will increase
+
+Primary Term--> During Failure Replicaset will primary shard, at that primary term will change
+
+
 #create index
 PUT /products
 {
