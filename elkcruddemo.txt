@@ -100,3 +100,15 @@ POST /customers/_update/1
     "source":  "ctx._source.remove('mobileNos');ctx._source.remove('city')"}
  
 }
+
+#upsert query
+if document 4 exists cost will be updated to 68000 else new document will be created with id 4 and price will be 70000
+POST /products/_update/4
+{
+"doc": {
+"cost": 68000
+},
+"upsert": {
+"price": 70000
+}
+}
