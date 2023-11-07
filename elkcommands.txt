@@ -14,6 +14,9 @@ logstash -f "path\filename" -e
 http://localhost:9200/_cat/indices?v
 #to rerieve all the documents from the index
 GET index_name/_search
+#go to logstash bin folder, for example
+H:\ELK\logstash-7.15.0-windows-x86_64\logstash-7.15.0\bin
+# after reaching bin folder execute the following commands
 #to view the list of plugins
 logstash-plugin list
 #add new plugin to logstash
