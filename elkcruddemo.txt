@@ -71,3 +71,9 @@ POST /products/_doc/1/_update
   }
 }
 
+#updating intermediate computations
+POST /products/_doc/1/_update
+{
+  "script":"ctx._source.cost+=500"
+}
+
