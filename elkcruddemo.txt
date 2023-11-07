@@ -49,5 +49,8 @@ POST /orders/eric/1
   "expiry-date":"2026-12-12"
 }
 
+#delete all the documents
 DELETE orders
+#delete specific document
+DELETE orders/eric/1
 
