@@ -54,3 +54,13 @@ DELETE orders
 #delete specific document
 DELETE orders/eric/1
 
+#update speicific document
+PUT products/_doc/1
+{
+  "productId" : 100,
+    "name" : "laptop-mac",
+    "cost" : 45000,
+    "expiry-date" : "2024-12-12"
+}
+
+
