@@ -15,5 +15,9 @@ http://localhost:9200/_cat/indices?v
 #to rerieve all the documents from the index
 GET index_name/_search
 
+#add new plugin to logstash
+logstash-plugin install logstash-output-mongodb
+
+
 
 
