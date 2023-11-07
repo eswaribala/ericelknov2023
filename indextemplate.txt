@@ -22,6 +22,9 @@ PUT /_index_template/rps_template
 #check the template
 GET /_index_template/rps_template
 
+#delete the template
+DELETE /_index_template/rps_template
+
 #create document with template
 PUT /rps_products
 #retrieve document
