@@ -40,6 +40,8 @@ POST /products/_doc/1
   "expiry-date":"2024-12-12"
 }
 
+
+
 #delete document
 POST /orders/eric/1
 {
@@ -69,6 +71,13 @@ POST /products/_doc/1/_update
   "doc":{
     "name":"notebook"
   }
+}
+
+#alternative approach
+POST /products/_update/1
+{
+  "script":"ctx._source.cost+=1500"
+  
 }
 
 #updating intermediate computations
