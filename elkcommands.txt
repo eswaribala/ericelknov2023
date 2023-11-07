@@ -46,6 +46,9 @@ Create the producer
 docker exec -it 3c9e60ccac88  kafka-console-producer.sh --broker-list localhost:9092 --topic boaqueue
 Create the Consumer
 docker exec -it 3c9e60ccac88  kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic  boaqueue --from-beginning
+#to check default index settings
+GET _all/_settings
+
 
 
 
