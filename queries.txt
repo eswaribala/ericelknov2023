@@ -121,4 +121,15 @@ GET bulkbooks/_search
 }
 
 }
+#regular expression to search
+GET bulkbooks/_search
+{
+"query": {
+"regexp": {
+    "publisher": "[a-z]*"
+  }
+
+}
+}
+
 
