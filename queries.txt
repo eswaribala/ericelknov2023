@@ -86,3 +86,14 @@ GET bulkbooks/_search
 }
 }
 }
+#field with keyword search using prefix
+GET bulkbooks/_search
+{
+"query": {
+"prefix": {
+    "summary.keyword": {
+      "value": "build"
+    }
+  }
+}
+}
