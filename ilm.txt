@@ -64,21 +64,23 @@ PUT _ilm/policy/hot-warm-cold-delete-60days
 
 #apply ilm policy
 #apply a policy
-PUT _template/datastream_template
+PUT _index_template/datastream_template
 {
-  "index_patterns": ["datastream-*"],                 
+  "index_patterns": ["telecom-*"],  
+   "template": {
   "settings": {
     "number_of_shards": 1,
     "number_of_replicas": 1,
     "index.lifecycle.name": "hot-warm-cold-delete-60days",      
     "index.lifecycle.rollover_alias": "hot-warm-cold-delete"    
   }
+   }
 }
 #retrieve template
 GET _template/datastream_template
 
 #create index
-PUT  datastream-orders
+PUT  telecom-orders
 
 
 
