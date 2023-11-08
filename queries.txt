@@ -144,4 +144,18 @@ GET bulkreceipes/_search
 }
 }
 
+#multi field search query
+GET bulkreceipes/_search
+{
+"query": {
+"multi_match": {
+    "query": "pasta",
+    "fields": ["title","description"]
+  }
+}
+}
+
+
+
+
 
