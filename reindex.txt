@@ -1,0 +1,81 @@
+PUT /transaction
+{
+  "settings": {
+    "number_of_shards": 1,
+"number_of_replicas": 1
+  },
+  "mappings": {
+    "properties": {
+      "amount":{"type": "long" },
+      "timeStamp":{"type": "date"},
+      "receiver":{"type":"text"},
+      "sender":{"type":"text"}
+      
+    }
+  }
+}
+
+PUT /transactionv1
+{
+ "settings": {
+"number_of_shards": 1,
+"number_of_replicas": 1
+ },
+ 
+ "mappings": {
+   "properties": {
+      "amount":{"type": "long" },
+      "timeStamp":{"type": "date"},
+      "receiver":{"type":"text"},
+      "sender":{"type":"text"},
+      "status":{"type":"boolean"}
+      
+    }
+ }
+  
+}
+
+
+PUT /transactionv2
+{
+ "settings": {
+"number_of_shards": 1,
+"number_of_replicas": 1
+ },
+ 
+ "mappings": {
+   "properties": {
+      "amount":{"type": "long" },
+      
+      "receiver":{"type":"text"},
+      "sender":{"type":"text"}
+  
+      
+    }
+ }
+  
+}
+
+
+POST /_reindex?pretty
+{
+ "source": {
+   "index": "transactionv1"
+ },
+ "dest": {
+   "index": "transactionv2"
+ }
+}
+
+
+GET /transactionv2/_mapping
+
+POST /transactionv2/_doc/2
+{
+  
+  "amount":5600,
+  "sender":"John",
+  "receiver":"Mary",
+  "timeStamp":"2023-08-08",
+  "status":true
+}
