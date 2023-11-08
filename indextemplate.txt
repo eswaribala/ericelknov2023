@@ -45,6 +45,33 @@ PUT /_index_template/rps_template
   "version": 1.0
 }
 
+PUT /_index_template/rps_template
+{
+  "index_patterns" : ["rps*", "virt*"],
+  "priority" : 1,
+  "template": {
+    "settings" : {
+        "number_of_shards" : 2,
+        "number_of_replicas": 0
+    },
+    "mappings":{
+      "properties":{
+        "orderId":{
+          "type":"long"
+        },
+        "orderAmount":{
+          "type":"long"
+        },
+        "orderDate":{
+          "type":"date",
+          "format":"yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+        }
+      }
+    }
+  },
+  "version": 1.0
+}
+
 
 #check the template
 GET /_index_template/rps_template
