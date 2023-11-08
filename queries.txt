@@ -32,3 +32,16 @@ GET bulkbooks/_search
 
 }
 }
+
+GET bulkbooks/_search
+{
+"query": {
+"terms": {
+   "publisher": [
+     "oreilly",
+     "manning"
+   ]
+ }
+
+}
+}
