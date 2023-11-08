@@ -74,6 +74,8 @@ PUT _template/datastream_template
     "index.lifecycle.rollover_alias": "hot-warm-cold-delete"    
   }
 }
+#retrieve template
+GET _template/datastream_template
 
 #create index
 PUT  data_stream-orders
