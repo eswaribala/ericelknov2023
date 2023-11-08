@@ -45,3 +45,14 @@ GET bulkbooks/_search
 
 }
 }
+
+#search by ids
+GET bulkbooks/_search
+{
+"query": {
+"ids": {
+  "values": ["1","3"]
+}
+}
+}
+
