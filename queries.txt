@@ -7,3 +7,14 @@ GET bulkbooks/_search
   }
 }
 }
+
+GET bulkbooks/_search
+{
+"query": {
+"term": {
+    "publisher": {
+      "value": "manning"
+    }
+  }
+}
+}
