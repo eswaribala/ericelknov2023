@@ -1,0 +1,46 @@
+PUT _component_template/settings_component_template
+{
+  "template":{
+    "settings":{
+      "number_of_shards":5,
+      "number_of_replicas":2
+    }
+  }
+}
+
+PUT _component_template/mappings_component_template
+{
+  "template": {
+    "mappings": {
+      "properties": {
+        "order_date": {
+          "type": "date",
+          "format":"dd-MM-yyyy"
+        }
+      }
+    }
+  }
+}
+
+PUT _component_template/aliases_component_template
+{
+  "template": {
+    "aliases": {
+      "all_orders": {},
+      "sales_orders":{}
+    }
+  }
+}
+
+PUT _index_template/composed_orders_template
+{
+  "index_patterns": [
+    "*orders"
+  ],
+  "priority": 500,
+  "composed_of": [
+    "settings_component_template",
+    "mappings_component_template",
+    "aliases_component_template"
+  ]
+}
