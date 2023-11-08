@@ -133,4 +133,15 @@ GET bulkbooks/_search
 }
 }
 
+#phrase query 
+
+GET bulkreceipes/_search
+{
+"query": {
+"match_phrase": {
+    "description": "Cherry tomatoes are almost always sweeter"
+  }
+}
+}
+
 
