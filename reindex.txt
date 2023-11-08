@@ -57,20 +57,10 @@ PUT /transactionv2
 }
 
 
-POST /_reindex?pretty
-{
- "source": {
-   "index": "transactionv1"
- },
- "dest": {
-   "index": "transactionv2"
- }
-}
 
 
-GET /transactionv2/_mapping
 
-POST /transaction/_doc/2
+POST /transaction/_doc/1
 {
   
   "amount":5600,
@@ -79,3 +69,17 @@ POST /transaction/_doc/2
   "timeStamp":"2023-08-08",
  
 }
+
+
+POST /_reindex?pretty
+{
+ "source": {
+   "index": "transactionv"
+ },
+ "dest": {
+   "index": "transactionv1"
+ }
+}
+
+#retrieve from new index
+GET /transactionv1/_search
