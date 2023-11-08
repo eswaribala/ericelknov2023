@@ -63,3 +63,17 @@ GET bulkproducts/_search
 }
 }
 }
+
+#range query
+GET bulkbooks/_search
+{
+"query": {
+"range": {
+    "num_reviews": {
+      "gte": 12,
+      "lte": 20
+    }
+  }
+}
+}
+
