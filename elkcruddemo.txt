@@ -101,6 +101,13 @@ POST /customers/_update/1
  
 }
 
+POST /products/_update/2
+{
+  "script": {
+    "source":  "ctx._source.remove('name');ctx._source.remove('cost')"}
+ 
+}
+
 #upsert query
 if document 4 exists cost will be updated to 68000 else new document will be created with id 4 and price will be 70000
 #use both doc and upsert together
