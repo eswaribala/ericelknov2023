@@ -108,3 +108,17 @@ GET bulkbooks/_search
   }
 }
 }
+
+#wild card search
+GET bulkbooks/_search
+{
+"query": {
+"wildcard": {
+    "publisher.keyword": {
+      "value": "*y"
+    }
+  }
+}
+
+}
+
