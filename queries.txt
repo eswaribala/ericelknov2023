@@ -1,0 +1,9 @@
+#term query
+GET bulkbooks/_search
+{
+"query": {
+"match": {
+    "summary": "text using approaches real-time"
+  }
+}
+}
