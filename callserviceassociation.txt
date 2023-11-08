@@ -55,3 +55,32 @@ PUT callservice
     
   }
 }
+
+#create customer customer document
+POST /callservice/_doc/1?routing=c1
+{
+  "customerId":1,
+  "name":{
+    "firstName":"Parameswari",
+    "middleName":"",
+    "lastName":"Bala"
+  },
+ "city":"chennai",
+  "customer_phone": {
+    "name": "customer"
+  }
+}
+=============================================
+POST /callservice/_doc/2?routing=c1
+{
+  "phoneNo":9952032862,
+  "model":"2023-01-01",
+  "IEMEINo":"478687487"
+  "customer_phone": {
+    "name": "phone",
+    "parent": 1
+  }
+}
+
+
+
