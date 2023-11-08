@@ -78,7 +78,7 @@ PUT _template/datastream_template
 GET _template/datastream_template
 
 #create index
-PUT  data_stream-orders
+PUT  datastream-orders
 
 
 
