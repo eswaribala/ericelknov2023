@@ -97,3 +97,14 @@ GET bulkbooks/_search
   }
 }
 }
+
+GET bulkbooks/_search
+{
+"query": {
+"prefix": {
+    "title.keyword": {
+      "value": "Taming"
+    }
+  }
+}
+}
