@@ -77,3 +77,12 @@ GET bulkbooks/_search
 }
 }
 
+#field existence
+GET bulkbooks/_search
+{
+"query": {
+"exists": {
+  "field": "authors"
+}
+}
+}
