@@ -103,6 +103,7 @@ POST /customers/_update/1
 
 #upsert query
 if document 4 exists cost will be updated to 68000 else new document will be created with id 4 and price will be 70000
+#use both doc and upsert together
 POST /products/_update/4
 {
 "doc": {
