@@ -75,6 +75,8 @@ PUT _template/datastream_template
   }
 }
 
+#create index
+PUT  data_stream-orders
 
 
 
