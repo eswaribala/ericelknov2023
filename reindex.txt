@@ -70,12 +70,12 @@ POST /_reindex?pretty
 
 GET /transactionv2/_mapping
 
-POST /transactionv2/_doc/2
+POST /transaction/_doc/2
 {
   
   "amount":5600,
   "sender":"John",
   "receiver":"Mary",
   "timeStamp":"2023-08-08",
-  "status":true
+ 
 }
