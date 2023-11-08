@@ -1,0 +1,2 @@
+GET _ilm/policy
+
