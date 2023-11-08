@@ -81,6 +81,20 @@ POST /callservice/_doc/2?routing=c1
     "parent": 1
   }
 }
-
+==================================
+#retrieve as parent
+GET /callservice/_search 
+{
+   "query":{
+      "has_parent":{
+         "parent_type":"customer",
+         "query":{
+            "match":{
+               "customerId":1
+            }
+         }
+      }
+   }
+}
 
 
