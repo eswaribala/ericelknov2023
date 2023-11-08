@@ -1,5 +1,9 @@
-GET _ilm/policy
 
+#retrieve Default Policy
+GET _ilm/policy
+#explain policy
+GET datastream-*/_ilm/explain
+#create new ilm policy
 PUT _ilm/policy/hot-warm-cold-delete-60days
 {
   "policy": {
@@ -57,3 +61,20 @@ PUT _ilm/policy/hot-warm-cold-delete-60days
     }
   }
 }
+
+#apply ilm policy
+#apply apolicy
+PUT _template/datastream_template
+{
+  "index_patterns": ["datastream-*"],                 
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 1,
+    "index.lifecycle.name": "hot-warm-cold-delete-60days",      
+    "index.lifecycle.rollover_alias": "hot-warm-cold-delete"    
+  }
+}
+
+
+
+
