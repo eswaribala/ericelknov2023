@@ -18,3 +18,17 @@ GET bulkbooks/_search
   }
 }
 }
+
+#terms query
+GET bulkbooks/_search
+{
+"query": {
+"terms": {
+   "publish_date": [
+     "2013-01-24",
+     "2014-04-05"
+   ]
+ }
+
+}
+}
