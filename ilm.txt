@@ -63,7 +63,7 @@ PUT _ilm/policy/hot-warm-cold-delete-60days
 }
 
 #apply ilm policy
-#apply apolicy
+#apply a policy
 PUT _template/datastream_template
 {
   "index_patterns": ["datastream-*"],                 
