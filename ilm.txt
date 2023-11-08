@@ -83,5 +83,22 @@ GET _template/datastream_template
 #create index
 PUT inv-shipping
 
+#create alias for indexing
+
+POST /_aliases
+{
+    "actions" : [
+        { "add" : { "index" : "inv-shipping", "alias" : "shipping" } }
+    ]
+}
+
+#retrieve index by alias
+
+
+GET shipping
+
+
+
+
 
 
