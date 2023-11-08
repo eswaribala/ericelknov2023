@@ -1,0 +1,117 @@
+PUT /customersv1
+{
+  "settings": {
+    "number_of_replicas": 1,
+"number_of_shards": 1
+  },
+  "mappings": {
+"properties": {
+  "customer":{
+    "properties": {
+      "customerId":{
+        "type":"integer"
+      },
+      "name":{
+        "properties":{
+          "firstName":{
+            "type":"text"
+          },
+          "middleName":{
+            "type":"text"
+          },
+          "lastName":{
+            "type":"text"
+          }
+        }
+      },
+      "email":{
+        "type":"text"
+      },
+      "contactNo":{
+        "type":"long"
+      }
+    }
+  },
+  "account":{
+"properties": {
+  "runningTotal":{
+    "type":"long"
+  },
+  "doc":{
+    "type":"date"
+  }
+}
+  },
+  "customer_account":{
+    "type":"join",
+    "relations":{
+      "customer":"account"
+    }
+  }
+}
+}
+}
+
+===============================
+POST /customersv1/_doc/1?routing=customer1
+{
+  "customerId":1,
+  "name":{
+    "firstName":"Parameswari",
+    "middleName":"",
+    "lastName":"Bala"
+  },
+  "email":"param@gmail.com",
+  "contactNo":9952032862,
+  "customer_account": {
+    "name": "customer"
+  }
+}
+=============================================
+POST /customersv1/_doc/2?routing=customer1
+{
+  "runningTotal":279723,
+  "doc":"2023-01-01",
+  "customer_account": {
+    "name": "account",
+    "parent": 1
+  }
+}
+=============================================
+POST /customersv1/_doc/3?routing=customer1
+{
+  "runningTotal":279745,
+  "doc":"2023-05-01",
+  "customer_account": {
+    "name": "account",
+    "parent": 1
+  }
+}
+
+==============================================
+GET /customersv1/_search 
+{
+   "query":{
+      "has_parent":{
+         "parent_type":"customer",
+         "query":{
+            "match":{
+               "customerId":1
+            }
+         }
+      }
+   }
+}
+===============================================
+GET customersv1/_search
+{
+  "query": {
+    "has_child": {
+      "type": "account",
+      "query": {
+        "match_all": {}
+      }
+     
+    }
+  }
+}
