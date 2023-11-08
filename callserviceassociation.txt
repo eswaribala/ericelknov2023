@@ -74,7 +74,7 @@ POST /callservice/_doc/1?routing=c1
 POST /callservice/_doc/2?routing=c1
 {
   "phoneNo":9952032862,
-  "model":"2023-01-01",
+  "model":"iphone12",
   "IEMEINo":"478687487",
   "customer_phone": {
     "name": "phone",
