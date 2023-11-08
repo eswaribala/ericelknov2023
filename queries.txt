@@ -122,6 +122,7 @@ GET bulkbooks/_search
 
 }
 #regular expression to search
+#Can only use regexp queries on keyword and text fields
 GET bulkbooks/_search
 {
 "query": {
