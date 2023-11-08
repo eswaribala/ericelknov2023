@@ -107,5 +107,17 @@ GET /callservice/_search
       }
    }
 }
-
+=====================================
+GET callservice/_search
+{
+  "query": {
+    "has_child": {
+      "type": "phone",
+      "query": {
+        "match_all": {}
+      }
+     
+    }
+  }
+}
 
