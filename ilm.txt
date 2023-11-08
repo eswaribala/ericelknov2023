@@ -66,7 +66,7 @@ PUT _ilm/policy/hot-warm-cold-delete-60days
 #apply a policy
 PUT _index_template/datastream_template
 {
-  "index_patterns": ["telecom-*"],  
+  "index_patterns": ["inv*"],  
    "template": {
   "settings": {
     "number_of_shards": 1,
@@ -76,11 +76,12 @@ PUT _index_template/datastream_template
   }
    }
 }
+
 #retrieve template
 GET _template/datastream_template
 
 #create index
-PUT  telecom-orders
+PUT inv-shipping
 
 
 
