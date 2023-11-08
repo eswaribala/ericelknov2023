@@ -74,7 +74,7 @@ POST /transaction/_doc/1
 POST /_reindex?pretty
 {
  "source": {
-   "index": "transactionv"
+   "index": "transaction"
  },
  "dest": {
    "index": "transactionv1"
