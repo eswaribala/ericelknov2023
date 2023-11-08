@@ -83,3 +83,10 @@ DELETE /_index_template/rps_template
 PUT /rps_products
 #retrieve document
 GET /rps_products
+
+POST rps_orders/_doc/1
+{
+  "orderId":3465974370,
+  "orderAmount":48000,
+  "orderDate":"2023-11-07"
+}
