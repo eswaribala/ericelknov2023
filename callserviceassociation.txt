@@ -81,6 +81,17 @@ POST /callservice/_doc/2?routing=c1
     "parent": 1
   }
 }
+POST /callservice/_doc/3?routing=c1
+{
+  "phoneNo":8056050425,
+  "model":"iphone15",
+  "IEMEINo":"478687490",
+  "customer_phone": {
+    "name": "phone",
+    "parent": 1
+  }
+}
+
 ==================================
 #retrieve as parent
 GET /callservice/_search 
