@@ -1,0 +1,57 @@
+PUT callservice
+{
+  "settings": {
+    
+    "number_of_shards": 1,
+    "number_of_replicas": 1,
+    "refresh_interval": "5s"
+    
+  },
+  "mappings": {
+    "properties": {
+      "customer":{
+        "properties": {
+          "customerId":{
+            "type":"long"
+          },
+          "name":{
+            "properties":{
+              "firstName":{
+                "type":"text"
+              },
+               "middleName":{
+                "type":"text"
+              },
+               "lastName":{
+                "type":"text"
+              }
+            }
+          },
+          "city":{
+            "type":"text"
+          }
+        }
+      },
+      "phone":{
+        "properties": {
+          "phoneNo":{
+            "type":"long"
+          },
+          "IMEINo":{
+            "type":"text"
+          },
+          "model":{
+            "type":"text"
+          }
+        }
+      },
+       "customer_phone":{
+    "type":"join",
+    "relations":{
+      "customer":"phone"
+    }
+  }
+    }
+    
+  }
+}
