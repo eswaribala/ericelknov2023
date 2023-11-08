@@ -55,4 +55,11 @@ GET bulkbooks/_search
 }
 }
 }
-
+GET bulkproducts/_search
+{
+"query": {
+"ids": {
+  "values": ["900", "500"]
+}
+}
+}
