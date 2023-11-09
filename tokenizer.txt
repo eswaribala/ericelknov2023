@@ -1,0 +1,279 @@
+POST _analyze
+{
+   "tokenizer": "lowercase",
+   "text": "It Was a Beautiful Weather 5 Days ago."
+}
+======================================
+The letter tokenizer breaks text into terms whenever it encounters a character which is not a letter. 
+POST _analyze
+{
+  "tokenizer": "letter",
+  "text": "The 2 QUICK Brown-Foxes jumped over the lazy dog's bone."
+}
+==========================================================
+The ngram tokenizer first breaks text down into words whenever it encounters one of a list of specified characters, then it emits N-grams of each word of the specified length.
+
+N-grams are like a sliding window that moves across the word - a continuous sequence of characters of the specified length. 
+
+POST _analyze
+{
+  "tokenizer": "ngram",
+  "text": "Quick Fox"
+}
+[ Q, Qu, u, ui, i, ic, c, ck, k, "k ", " ", " F", F, Fo, o, ox, x ]
+===================================================
+custom analyzer
+---
+PUT my-index-000001
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_analyzer": {
+          "tokenizer": "my_tokenizer"
+        }
+      },
+      "tokenizer": {
+        "my_tokenizer": {
+          "type": "ngram",
+          "min_gram": 3,
+          "max_gram": 3,
+          "token_chars": [
+            "letter",
+            "digit"
+          ]
+        }
+      }
+    }
+  }
+}
+
+POST my-index-000001/_analyze
+{
+  "analyzer": "my_analyzer",
+  "text": "2 Quick Foxes."
+}
+=================================================
+path hierarchy
+POST _analyze
+{
+  "tokenizer": "path_hierarchy",
+  "text": "/one/two/three"
+}
+=================================
+custom query
+PUT my-index-000001
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_analyzer": {
+          "tokenizer": "my_tokenizer"
+        }
+      },
+      "tokenizer": {
+        "my_tokenizer": {
+          "type": "path_hierarchy",
+          "delimiter": "-",
+          "replacement": "/",
+          "skip": 2
+        }
+      }
+    }
+  }
+}
+
+POST my-index-000001/_analyze
+{
+  "analyzer": "my_analyzer",
+  "text": "one-two-three-four-five"
+}
+==========================================
+pattern tokenizer
+
+PUT my-index-000001
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_analyzer": {
+          "tokenizer": "my_tokenizer"
+        }
+      },
+      "tokenizer": {
+        "my_tokenizer": {
+          "type": "pattern",
+          "pattern": "\"((?:\\\\\"|[^\"]|\\\\\")+)\"",
+          "group": 1
+        }
+      }
+    }
+  }
+}
+
+POST my-index-000001/_analyze
+{
+  "analyzer": "my_analyzer",
+  "text": "\"value\", \"value with embedded \\\" quote\""
+}
+=====================================
+PUT my-index-000001
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_analyzer": {
+          "tokenizer": "my_tokenizer"
+        }
+      },
+      "tokenizer": {
+        "my_tokenizer": {
+          "type": "simple_pattern",
+          "pattern": "[0123456789]{3}"
+        }
+      }
+    }
+  }
+}
+
+POST my-index-000001/_analyze
+{
+  "analyzer": "my_analyzer",
+  "text": "fd-786-335-514-x"
+}
+=============================================
+PUT my-index-000001
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_analyzer": {
+          "tokenizer": "my_tokenizer"
+        }
+      },
+      "tokenizer": {
+        "my_tokenizer": {
+          "type": "simple_pattern_split",
+          "pattern": "_"
+        }
+      }
+    }
+  }
+}
+
+POST my-index-000001/_analyze
+{
+  "analyzer": "my_analyzer",
+  "text": "an_underscored_phrase"
+}
+===========================================================
+Standard tokenizer
+PUT my-index-000001
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_analyzer": {
+          "tokenizer": "my_tokenizer"
+        }
+      },
+      "tokenizer": {
+        "my_tokenizer": {
+          "type": "standard",
+          "max_token_length": 5
+        }
+      }
+    }
+  }
+}
+
+POST my-index-000001/_analyze
+{
+  "analyzer": "my_analyzer",
+  "text": "The 2 QUICK Brown-Foxes jumped over the lazy dog's bone."
+}
+===============================================================
+Email Tokenizer
+
+PUT my-index-000001
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_analyzer": {
+          "tokenizer": "my_tokenizer"
+        }
+      },
+      "tokenizer": {
+        "my_tokenizer": {
+          "type": "uax_url_email",
+          "max_token_length": 5
+        }
+      }
+    }
+  }
+}
+
+POST my-index-000001/_analyze
+{
+  "analyzer": "my_analyzer",
+  "text": "john.smith@global-international.com"
+}
+========================================================
+white space
+
+POST _analyze
+{
+  "tokenizer": "whitespace",
+  "text": "The 2 QUICK Brown-Foxes jumped over the lazy dog's bone."
+}
+=============================
+GET /_analyze
+{
+  "tokenizer" : "standard",
+  "filter" : ["apostrophe"],
+  "text" : "Istanbul'a veya Istanbul'dan"
+}
+============================
+GET /_analyze
+{
+  "tokenizer" : "standard",
+  "filter" : ["asciifolding"],
+  "text" : "açaí à la carte"
+}
+===================================
+conditional token filter
+GET /_analyze
+{
+  "tokenizer": "standard",
+  "filter": [
+    {
+      "type": "condition",
+      "filter": [ "lowercase" ],
+      "script": {
+        "source": "token.getTerm().length() < 5"
+      }
+    }
+  ],
+  "text": "THE QUICK BROWN FOX"
+}
+=====================================
+
+============================
+POST /_analyze
+{
+ "char_filter": [
+  "html_strip"
+ ],
+ "tokenizer": "standard",
+ "filter": [
+  "stop",
+  "lowercase",
+  "stemmer"
+ ],
+ "text": "<b>the sky is Blue bright and shining<b>"
+}
+{ 
+"details" : "<b>the sky is Blue bright and shining<b>"
+}
+====================================================
