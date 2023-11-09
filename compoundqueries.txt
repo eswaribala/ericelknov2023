@@ -290,30 +290,30 @@ POST /bookdb_index/book/_search
 
 ------------------------------------------
 POST /bookdb_index/book/_search
+GET bulkbooks/_search
 {
 "query": {
-    "bool" : {
-       "must" : {
-                "multi_match": {
-                    "query": "elasticsearch",
-                    "fields": ["title","summary"]
-                }
-            },
-            "filter": {
-                "range" : {
-                    "num_reviews": {
-                        "gte": 20
-                    }
-                }
-            },
-            
-      "boost" : 1.0
-    }
-},
-  "_source" : ["title","summary","publisher", "num_reviews"]
+  "bool": {
+    "must": [
+      {
+       "multi_match": {
+          "query": "Solr",
+          "fields": ["title","summary"]
+        }
+      }
+    ],
+    "filter": [
+      {
+       "range": {
+          "num_reviews": {
+            "gte": 20
+          }
+        }
+      }
+    ]
+  }
   
-  
-
+}
 }
 
 
