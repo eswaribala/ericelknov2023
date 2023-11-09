@@ -1,0 +1,216 @@
+# Introduction to aggregations
+
+## Adding `order` index and mappings
+
+```
+PUT /order
+{
+  "mappings": {
+    "properties": {
+      "purchased_at": {
+        "type": "date"
+      },
+      "lines": {
+        "type": "nested",
+        "properties": {
+          "product_id": {
+            "type": "integer"
+          },
+          "amount": {
+            "type": "double"
+          },
+          "quantity": {
+            "type": "short"
+          }
+        }
+      },
+      "total_amount": {
+        "type": "double"
+      },
+      "status": {
+        "type": "keyword"
+      },
+      "sales_channel": {
+        "type": "keyword"
+      },
+      "salesman": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "text"
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+## Populating the `order` index with test data
+
+```
+curl -H "Content-Type: application/json" -XPOST "http://localhost:9200/order/_doc/_bulk?pretty" --data-binary "@orders-bulk.json"
+```
+
+Metric Queries
+
+```
+GET /order/_search
+{
+  "size": 0,
+  "aggs": {
+    "total_sales": {
+      "sum": {
+        "field": "total_amount"
+      }
+    },
+    "avg_sale": {
+      "avg": {
+        "field": "total_amount"
+      }
+    },
+    "min_sale": {
+      "min": {
+        "field": "total_amount"
+      }
+    },
+    "max_sale": {
+      "max": {
+        "field": "total_amount"
+      }
+    }
+  }
+}
+```
+
+## Retrieving the number of distinct values
+
+```
+GET /order/_search
+{
+  "size": 0,
+  "aggs": {
+    "total_salesmen": {
+      "cardinality": {
+        "field": "salesman.id"
+      }
+    }
+  }
+}
+```
+
+## Retrieving the number of values
+
+```
+GET /order/_search
+{
+  "size": 0,
+  "aggs": {
+    "values_count": {
+      "value_count": {
+        "field": "total_amount"
+      }
+    }
+  }
+}
+```
+
+## Using `stats` aggregation for common statistics
+
+```
+GET /order/_search
+{
+  "size": 0,
+  "aggs": {
+    "amount_stats": {
+      "stats": {
+        "field": "total_amount"
+      }
+    }
+  }
+}
+
+GET /order/_search
+{
+  "size": 0,
+  "aggs": {
+    "purchased_ranges": {
+      "date_range": {
+        "field": "purchased_at",
+        "ranges": [
+          {
+            "from": "2016-01-01",
+            "to": "2016-01-01||+6M"
+          },
+          {
+            "from": "2016-01-01||+6M",
+            "to": "2016-01-01||+1y"
+          }
+        ]
+      }
+    }
+  }
+}
+
+//bucket query
+
+GET /order/_search
+{
+  "size": 0,
+  "aggs": {
+    "status_terms": {
+      "terms": {
+        "field": "status"
+      }
+    }
+  }
+}
+
+GET /order/_search
+{
+  "size": 0,
+  "aggs": {
+    "amount_distribution": {
+      "histogram": {
+        "field": "total_amount",
+        "interval": 25
+      }
+    }
+  }
+}
+
+GET /order/_search
+{
+  "size": 0, 
+  "aggregations": { 
+  "responses.counts": { 
+    "scripted_metric": { 
+      "init_script": "state.responses = ['error':0L,'success':0L,'other':0L]", 
+      "map_script": """ 
+        def code = doc['status'].value;
+        if (code == 'cancelled' || code == 'pending') {
+          state.responses.error += 1 ;
+        } else if(code == 'completed') {
+          state.responses.success += 1;
+        } else {
+          state.responses.other += 1;
+        }
+        """,
+      "combine_script": "state.responses", 
+      "reduce_script": """ 
+        def counts = ['error': 0L, 'success': 0L, 'other': 0L];
+        for (responses in states) {
+          counts.error += responses['error'];
+          counts.success += responses['success'];
+          counts.other += responses['other'];
+        }
+        return counts;
+        """
+      }
+    }
+  
+}
+}
