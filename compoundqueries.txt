@@ -166,6 +166,19 @@ GET bulkbooks/_search
   }
 }
 }
+
+GET bulkbooks/_search
+{
+"query": {
+"fuzzy": {
+    "title": {
+      "value": "Ealsticsearch",
+      "fuzziness": 2
+      
+    }
+  }
+}
+}
 ---------------------------------------------------------
 wild card query
 POST /bookdb_index/book/_search
