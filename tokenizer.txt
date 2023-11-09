@@ -10,6 +10,14 @@ POST _analyze
 "char_filter": ["html_strip"],
 "text": "<p>I &apos;m in chennai</P>"
 }
+
+===========================
+POST _analyze
+{
+"tokenizer": "keyword",
+"char_filter": ["html_strip"],
+"text": "<p>I &apos;m in chennai</P>"
+}
 ======================================
 The letter tokenizer breaks text into terms whenever it encounters a character which is not a letter. 
 POST _analyze
