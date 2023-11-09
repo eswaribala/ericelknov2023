@@ -287,29 +287,7 @@ POST /bookdb_index/book/_search
 }
 --------------------------------------------
 
-Filtered Bool Query
 
-POST /bookdb_index/book/_search
-{
-    "query": {
-        "filtered": {
-            "query" : {
-                "multi_match": {
-                    "query": "elasticsearch",
-                    "fields": ["title","summary"]
-                }
-            },
-            "filter": {
-                "range" : {
-                    "num_reviews": {
-                        "gte": 20
-                    }
-                }
-            }
-        }
-    },
-    "_source" : ["title","summary","publisher", "num_reviews"]
-}
 ------------------------------------------
 POST /bookdb_index/book/_search
 {
