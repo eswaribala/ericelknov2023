@@ -108,6 +108,51 @@ POST /bookdb_index/book/_search
     }
   }
 }
+============================================================
+GET bulkbooks/_search
+{
+"query": {
+  "bool": {
+    "must": [
+      {
+        "bool": {
+          "must": [
+            {
+              "match": {
+                "title": "Solr"
+              }
+            },
+            {
+               "match": {
+                "publisher": "manning"
+              }
+            }
+          ],
+          "should": [
+            {
+             "match": {
+                "authors": "timothy potter"
+              }
+            }
+          ]
+        }
+      }
+      
+      ],
+      "must_not": [
+        {
+         "range": {
+           "num_reviews": {
+             "gte": 30,
+             "lte": 5
+           }
+         }
+        }
+      ]
+  }
+}
+}
+
 ==========================================
 fuzzy query
 POST /bookdb_index/book/_search
