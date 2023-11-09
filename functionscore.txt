@@ -1,0 +1,151 @@
+Function Score: Field Value Factor
+PUT /rentals
+{
+  "mappings": {
+    "properties": {
+      "rooms": {
+        "type": "float"
+      },
+      "size": {
+        "type": "integer"
+      },
+      "public-transport": {
+        "type": "integer"
+      },
+      "price": {
+        "type": "integer"
+      },
+      "address": {
+        "properties": {
+          "location": {
+            "type": "geo_point"
+          },
+          "zipcode": {
+            "type": "integer"
+          },
+          "city": {
+            "type": "keyword"
+          }
+        }
+      }
+    }
+  }
+}
+
+
+POST /_bulk
+{"index":{"_index":"rentals","_id":"21322197"}}
+{"title":"4.5-Zimmerwohnung im Stadtzentrum","rooms":4.5,"size":125,"public-transport":20,"price":1990,"address":{"location":"47.143299, 7.248760","zipcode":2502,"city":"Biel"}}
+{"index":{"_index":"rentals","_id":"21321999"}}
+{"title":"4 1/2 Zimmer Wohnung","rooms":4.5,"size":125,"public-transport":100,"price":1790,"address":{"location":"47.123707, 7.281259","zipcode":2555,"city":"Brügg"}}
+{"index":{"_index":"rentals","_id":"21321337"}}
+{"title":"Moderne 3.5 Zimmerwohnung ","rooms":3.5,"size":85,"public-transport":400,"price":2100,"address":{"location":"47.016240, 7.482030","zipcode":3302,"city":"Moosseedorf"}}
+{"index":{"_index":"rentals","_id":"21304252"}}
+{"title":"Grosszügige 4,5 Zimmer Wohnung","rooms":4.5,"size":120,"public-transport":350,"price":1980,"address":{"location":"47.073559, 7.305770","zipcode":3250,"city":"Lyss"}}
+{"index":{"_index":"rentals","_id":"21302806"}}
+{"title":"Grosszügige 4,5 Zimmer Wohnung","rooms":4.5,"size":107,"public-transport":100,"price":2390,"address":{"location":"46.947975, 7.447447","zipcode":3008,"city":"Bern"}}
+{"index":{"_index":"rentals","_id":"21296614"}}
+{"title":"Grosse 5,5 Zimmerwohnung im Erdgeschoss an ruhiger Lage","rooms":5.5,"size":147,"public-transport":130,"price":1980,"address":{"location":"47.192829, 7.395120","zipcode":2540,"city":"Grenchen"}}
+{"index":{"_index":"rentals","_id":"21261864"}}
+{"title":"Moderne 4.5-Zimmer-Whg","rooms":4.5,"size":115,"public-transport":500,"price":2350,"address":{"location":"47.038050, 7.376610","zipcode":3054,"city":"Schüpfen"}}
+{"index":{"_index":"rentals","_id":"21320202"}}
+{"title":"Wohnung mit toller Aussicht","rooms":3.5,"size":84,"public-transport":500,"price":2070,"address":{"location":"46.956170, 7.482840","zipcode":3072,"city":"Ostermundigen"}}
+{"index":{"_index":"rentals","_id":"21264148"}}
+{"title":"Wo sich Fuchs und Hase Gute Nacht sagen","rooms":4.5,"size":89,"public-transport":100,"price":1795,"address":{"location":"46.998320, 7.451090","zipcode":3072,"city":"Zollikofen"}}
+
+Start Searching for Apartments
+In the first query, we are searching for apartments that match our first criteria:
+We need at least three rooms, but we would favor apartments with four rooms.
+Apartments with four rooms get a boost of 1.
+
+
+GET rentals/_search?format=yaml
+{
+  "_source": ["title", "rooms"],
+  "query": {
+    "bool": {
+      "should": [
+        { "range": { "rooms": { "gte": 3 }}},
+        { "range": { "rooms": { "gte": 4, "boost": 1 }}}
+      ]
+    }
+  }
+}
+
+we look into another critical criterion, the rental fee or price. We combine them with our previous search.
+We switch to the function_score, that allows you to modify the score of documents that are retrieved by a query.
+We keep our room preferences.
+The price reflects another user desire. If your budget is not unlimited, you would probably prefer something in your budget above something expensive. For the price field, the origin would be 1700 CHF, and the scale depends on how much you are willing to pay additionally, for example, 300 CHF. This budget is not necessarily your limit but gives us a very sensible ranking.
+
+GET rentals/_search?format=yaml
+{
+  "_source": [
+    "address.city",
+    "rooms",
+    "price"
+  ],
+  "query": {
+    "function_score": {
+      "query": {
+        "bool": {
+          "should": [
+            { "range": { "rooms": { "gte": 3 } } },
+            { "range": { "rooms": { "gte": 4, "boost": 2 } } }
+          ]
+        }
+      },
+      "functions": [
+        { "gauss": { "price": { "origin": "1700", "scale": "300" } } }
+      ]
+    }
+  }
+}
+
+GET rentals/_search?format=yaml
+{
+  "size": 1,
+  "_source": ["address.city","rooms","price"],
+  "query": {
+    "function_score": {
+      "query": {
+        "bool": {
+          "should": [
+            { "range": { "rooms": { "gte": 3 } } },
+            { "range": { "rooms": { "gte": 4, "boost": 2 } } }
+          ]
+        }
+      },
+      "functions": [
+        { "gauss": { "price": { "origin": "1700", "scale": "300" } } }
+      ]
+    }
+  },
+  "explain": true
+}
+
+GET rentals/_search
+{
+  "query": {
+    "function_score": {
+      "query": {
+        "bool": {
+          "should": [
+            { "range": { "rooms": { "gte": 3 } } },
+            { "range": { "rooms": { "gte": 4, "boost": 1 } } }
+          ]
+        }
+      },
+      "functions": [
+        { "gauss": { "price": { "origin": "1700", "scale": "300" } } },
+        { "gauss": {
+            "address.location": {
+              "origin": "47.073560, 7.305770",
+              "scale": "5km"
+            }
+          }
+        }
+      ],
+      "score_mode": "multiply"
+    }
+  }
+}
