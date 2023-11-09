@@ -1,0 +1,311 @@
+PUT /bookdb_index
+    { "settings": { "number_of_shards": 1 }}
+------------------------------------------------------
+
+POST /bookdb_index/book/_bulk
+    { "index": { "_id": 1 }}
+    { "title": "Elasticsearch: The Definitive Guide", "authors": ["clinton gormley", "zachary tong"], "summary" : "A distibuted real-time search and analytics engine", "publish_date" : "2015-02-07", "num_reviews": 20, "publisher": "oreilly" }
+    { "index": { "_id": 2 }}
+    { "title": "Taming Text: How to Find, Organize, and Manipulate It", "authors": ["grant ingersoll", "thomas morton", "drew farris"], "summary" : "organize text using approaches such as full-text search, proper name recognition, clustering, tagging, information extraction, and summarization", "publish_date" : "2013-01-24", "num_reviews": 12, "publisher": "manning" }
+    { "index": { "_id": 3 }}
+    { "title": "Elasticsearch in Action", 
+"authors": ["radu gheorge", "matthew lee hinman", "roy russo"], 
+"summary" : "build scalable search applications using 
+Elasticsearch without having to do complex low-level programming or
+ understand advanced data science algorithms",
+ "publish_date" : "2015-12-03", 
+"num_reviews": 18, 
+"publisher": "manning" }
+    { "index": { "_id": 4 }}
+    { "title": "Solr in Action", "authors": ["trey grainger", "timothy potter"], "summary" : "Comprehensive guide to implementing a scalable search engine using Apache Solr", "publish_date" : "2014-04-05", "num_reviews": 23, "publisher": "manning" }
+-----------------------------------------------------------------------
+GET /bookdb_index/book/_search?q=guide
+----------------------------------------
+GET /bookdb_index/book/_search?q=title:in action
+-----------------------------------------------
+POST /bookdb_index/book/_search
+{
+    "query": {
+        "match" : {
+            "title" : "in action"
+        }
+    },
+    "size": 2,
+    "from": 0,
+    "_source": [ "title", "summary", "publish_date" ],
+    "highlight": {
+        "fields" : {
+            "title" : {}
+        }
+    }
+}
+============================================
+POST /bookdb_index/book/_search
+{
+    "query": {
+        "multi_match" : {
+            "query" : "elasticsearch guide",
+            "fields": ["title", "summary"]
+        }
+    },
+    "_source": ["title", "summary", "publish_date"]
+}
+--------------------------------------------------------------
+# must means: The clause (query) must appear in matching documents. These clauses must match, like logical AND.
+
+should means: At least one of these clauses must match, like logical OR.
+
+POST /books/_search
+{
+  "query": {
+    
+        "bool" : { 
+          "should": [
+            { "match": { "title": "Elasticsearch" }},
+            { "match": { "title": "Solr" }} 
+          ]
+         
+        }
+     
+  }
+}
+
+=====================================================
+#I want to search for a book with the word “Elasticsearch” OR “Solr” in the title, AND is authored by “clinton gormley”
+
+POST /books/_search
+{
+  "query": {
+    
+        "bool" : { 
+          "should": [
+            { "match": { "title": "Elasticsearch" }},
+            { "match": { "title": "Solr" }} 
+          ],
+         "must": { "match": { "authors": "clinton gormely" }} 
+         
+        }
+     
+  }
+}
+======================================================
+#I want to search for a book with the word “Elasticsearch” OR “Solr” in the title, AND is authored by “clinton gormley” but NOT authored by “radu gheorge”:
+
+POST /bookdb_index/book/_search
+{
+  "query": {
+    "bool": {
+      "must": {
+        "bool" : { 
+          "should": [
+            { "match": { "title": "Elasticsearch" }},
+            { "match": { "title": "Solr" }} 
+          ],
+          "must": { "match": { "authors": "clinton gormely" }} 
+        }
+      },
+      "must_not": { "match": {"authors": "radu gheorge" }}
+    }
+  }
+}
+==========================================
+fuzzy query
+POST /bookdb_index/book/_search
+{
+  "query": {
+    "bool": {
+      "must": {
+        "bool" : { 
+          "should": [
+            { "match": { "title": "Elasticsearch" }},
+            { "match": { "title": "Solr" }} 
+          ],
+          "must": { "match": { "authors": "clinton gormely" }} 
+        }
+      },
+      "must_not": { "match": {"authors": "radu gheorge" }}
+    }
+  }
+}
+---------------------------------------------------------
+wild card query
+POST /bookdb_index/book/_search
+{
+    "query": {
+        "wildcard" : {
+            "authors" : "t*"
+        }
+    },
+    "_source": ["title", "authors"],
+    "highlight": {
+        "fields" : {
+            "authors" : {}
+        }
+    }
+}
+===========================================
+Regexp query
+POST /bookdb_index/book/_search
+{
+    "query": {
+        "regexp" : {
+            "authors" : "t[a-z]*y"
+        }
+    },
+    "_source": ["title", "authors"],
+    "highlight": {
+        "fields" : {
+            "authors" : {}
+        }
+    }
+}
+------------------------------------------
+Match Phrase query
+The match phrase query requires that all the terms
+ in the query string be present in the document, 
+be in the order specified in the query 
+string and be close to each other.
+POST /bookdb_index/book/_search
+{
+    "query": {
+        "multi_match" : {
+            "query": "search engine",
+            "fields": ["title", "summary"],
+            "type": "phrase",
+            "slop": 3
+        }
+    },
+    "_source": [ "title", "summary", "publish_date" ]
+}
+-----------------------------------------------------
+Match phrase prefix
+
+POST /bookdb_index/book/_search
+{
+    "query": {
+        "match_phrase_prefix" : {
+            "summary": {
+                "query": "search en",
+                "slop": 3,
+                "max_expansions": 10
+            }
+        }
+    },
+    "_source": [ "title", "summary", "publish_date" ]
+}
+--------------------------------------------------
+terms query
+POST /bookdb_index/book/_search
+{
+    "query": {
+        "term" : {
+            "publisher": "manning"
+        }
+    },
+    "_source" : ["title","publish_date","publisher"]
+}
+----------------------------------------
+Terms query sorted
+POST /bookdb_index/book/_search
+{
+    "query": {
+        "term" : {
+            "publisher": "manning"
+        }
+    },
+    "_source" : ["title","publish_date","publisher"],
+    "sort": [
+        { "publish_date": {"order":"desc"}}
+    ]
+}
+------------------------------------------
+
+Range Query
+POST /bookdb_index/book/_search
+{
+    "query": {
+        "range" : {
+            "publish_date": {
+                "gte": "2015-01-01",
+                "lte": "2015-12-31"
+            }
+        }
+    },
+    "_source" : ["title","publish_date","publisher"]
+}
+--------------------------------------------
+
+Filtered Bool Query
+
+POST /bookdb_index/book/_search
+{
+    "query": {
+        "filtered": {
+            "query" : {
+                "multi_match": {
+                    "query": "elasticsearch",
+                    "fields": ["title","summary"]
+                }
+            },
+            "filter": {
+                "range" : {
+                    "num_reviews": {
+                        "gte": 20
+                    }
+                }
+            }
+        }
+    },
+    "_source" : ["title","summary","publisher", "num_reviews"]
+}
+------------------------------------------
+POST /bookdb_index/book/_search
+{
+"query": {
+    "bool" : {
+       "must" : {
+                "multi_match": {
+                    "query": "elasticsearch",
+                    "fields": ["title","summary"]
+                }
+            },
+            "filter": {
+                "range" : {
+                    "num_reviews": {
+                        "gte": 20
+                    }
+                }
+            },
+            
+      "boost" : 1.0
+    }
+},
+  "_source" : ["title","summary","publisher", "num_reviews"]
+  
+  
+
+}
+
+
+---------------------------------------------
+Function Score: Field Value Factor
+
+POST /bookdb_index/book/_search
+{
+    "query": {
+        "function_score": {
+            "query": {
+                "multi_match" : {
+                    "query" : "search engine",
+                    "fields": ["title", "summary"]
+                }
+            },
+            "field_value_factor": {
+                "field" : "num_reviews",
+                "modifier": "log1p",
+                "factor" : 2
+            }
+        }
+    },
+    "_source": ["title", "summary", "publish_date", "num_reviews"]
+}
