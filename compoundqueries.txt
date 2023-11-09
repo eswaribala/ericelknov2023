@@ -155,22 +155,16 @@ GET bulkbooks/_search
 
 ==========================================
 fuzzy query
-POST /bookdb_index/book/_search
+GET bulkbooks/_search
 {
-  "query": {
-    "bool": {
-      "must": {
-        "bool" : { 
-          "should": [
-            { "match": { "title": "Elasticsearch" }},
-            { "match": { "title": "Solr" }} 
-          ],
-          "must": { "match": { "authors": "clinton gormely" }} 
-        }
-      },
-      "must_not": { "match": {"authors": "radu gheorge" }}
+"query": {
+"fuzzy": {
+    "title": {
+      "value": "Ealsticsearch"
+      
     }
   }
+}
 }
 ---------------------------------------------------------
 wild card query
