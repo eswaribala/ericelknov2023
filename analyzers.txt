@@ -28,5 +28,29 @@ POST my-index-000001/_analyze
 
 
 ============================================================================
-
+PUT customanalyzer
+{
+  "settings": {
+    
+    "analysis": {
+      
+      "analyzer": {
+        
+        "training_analyzer":{
+          "tokenizer":"standard",
+        "char_filter":["credit-card-filter"]
+        }
+        
+      },
+      "char_filter": {
+        "credit-card-filter":{
+          "type":"pattern_replace",
+          "pattern":"(\\d)+-(?=\\d)",
+          "replacement":"$1_"
+          
+        }
+      }
+    }
+  }
+}
 
