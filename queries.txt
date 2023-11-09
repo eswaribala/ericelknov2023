@@ -1,4 +1,5 @@
 #term query
+#term internally uses tokenizer with lowercase filter
 GET bulkbooks/_search
 {
 "query": {
