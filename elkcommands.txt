@@ -53,6 +53,12 @@ GET index_name/_mapping
 #check existing templates
 GET _template
 
+#command to run filebeat 
+filebeat.exe –modules mongodb -c filebeat.yml –e
+filebeat.exe -c filebeat.yml -e -d "*"
+
+
+
 
 
 
