@@ -36,6 +36,7 @@ filebeat.inputs:
      - E:/software/A08/file/apache-activemq-5.14.0-bin/apache-activemq-5.14.0/data/activemq.log
    # - E:/software/A08/file/apache-tomcat-9.0.6-windows-x64/apache-tomcat-9.0.6/logs/*.log
      - E:/software/A08/file/camunda-bpm-tomcat-7.15.0/server/apache-tomcat-9.0.43/logs/*.log
+     - E:/software/A08/file/sonarqube-7.9.1/logs/*.log 
   # Exclude lines. A list of regular expressions to match. It drops the lines that are
   # matching any regular expression from the list.
   #exclude_lines: ['^DBG']
@@ -186,9 +187,9 @@ setup.kibana:
 # Configure what output to use when sending the data collected by the beat.
 
 # ---------------------------- Elasticsearch Output ----------------------------
-# output.elasticsearch:
+#output.elasticsearch:
   # Array of hosts to connect to.
- # hosts: ["localhost:9200"]
+  #hosts: ["localhost:9200"]
   #index: "%{[fields.log_type]}-%{[agent.version]}-%{+yyyy.MM.dd}" 
   # Protocol - either `http` (default) or `https`.
   #protocol: "https"
@@ -286,4 +287,3 @@ monitoring.enabled: false
 
 # This allows to enable 6.7 migration aliases
 #migration.6_to_7.enabled: true
-
