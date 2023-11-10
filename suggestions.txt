@@ -1,0 +1,110 @@
+PUT jobs
+{
+  "mappings": {
+    "properties": {
+      "title": {
+        "type": "keyword"
+      },
+      "suggest": {
+        "type": "completion"
+      }
+    }
+  }
+}
+
+PUT jobs/_doc/1?refresh
+{
+  "suggest": [
+    {
+      "input": [
+        "Software Engineer",
+        "Software Architect"
+      ],
+      "weight": 3
+    },
+    {
+      "input": [
+        "Software Developer",
+        "Software Programmer"
+      ],
+      "weight": 2
+    },
+    {
+      "input": "Software Manager",
+      "weight": 1
+    }
+  ]
+}
+
+PUT jobs/_doc/2?refresh
+{
+  "suggest": [
+    {
+      "input": [
+        "Solution Architect",
+        "Solution Designer"
+      ],
+      "weight": 1
+    }
+  ]
+}
+
+PUT jobs/_doc/3?refresh
+{
+  "suggest": [
+    {
+      "input": "Engineer",
+      "weight": 2
+    },
+    {
+      "input": "Software Engineer",
+      "weight": 1
+    }
+  ]
+}
+
+=======================
+suggest eng for engineers
+
+POST jobs/_search
+{
+  "suggest": {
+    "job-suggest": {
+      "prefix": "eng",
+      "completion": {
+        "field": "suggest"
+      }
+    }
+  }
+}
+
+suggest sol for solution
+
+POST jobs/_search
+{
+  "suggest": {
+    "job-suggest": {
+      "prefix": "sol",
+      "completion": {
+        "field": "suggest"
+      }
+    }
+  }
+}
+
+suggest sol with fuzziness
+
+POST jobs/_search
+{
+  "suggest": {
+    "job-suggest": {
+      "prefix": "sol",
+      "completion": {
+        "field": "suggest",
+        "fuzzy": {
+          "fuzziness": 1
+        }
+      }
+    }
+  }
+}
