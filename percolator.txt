@@ -1,0 +1,73 @@
+PUT cars 
+{
+  "mappings": {
+    "properties": {
+      "brand" : { "type" : "keyword" },
+      "model" : { "type" : "keyword" },
+      "price" : { "type" : "long" }
+    }
+  }
+}
+
+PUT cars/_bulk?refresh
+{ "index" : { "_id": "1" } }
+{ "brand" : "Tesla", "model" : "3", "price": 60000 }
+{ "index" : { "_id": "2" } }
+{ "brand" : "BMW", "model" : "330e", "price": 40000 }
+{ "index" : { "_id": "3"} }
+{ "brand" : "Mercedes", "model" : "E500", "price": 50000 }
+
+
+
+
+PUT percolator-queries
+{
+  "mappings": {
+    "properties": {
+      "query" : {
+        "type" : "percolator"
+      },
+      "brand" : { "type" : "keyword" },
+      "model" : { "type" : "keyword" },
+      "price" : { "type" : "long" }
+    }
+  }
+}
+
+PUT percolator-queries/_doc/tesla_model_3_alert
+{
+  "query" : {
+    "query_string" : {
+      "query" : "brand:Tesla AND model:3 AND price:<=50000"
+    }
+  }
+}
+
+PUT cars/_bulk?refresh
+{ "index" : { "_id": "4" } }
+{ "brand" : "Tesla", "model" : "3", "price": 50000 }
+
+GET percolator-queries/_search
+{
+  "query": {
+    "percolate": {
+      "field": "query",
+      "document": {
+        "brand": "Tesla",
+        "model": "3",
+        "price": 50000
+      }
+    }
+  }
+}
+
+GET percolator-queries/_search
+{
+  "query": {
+    "percolate": {
+      "field": "query",
+      "index" : "cars",
+      "id" : "4"
+    }
+  }
+}
