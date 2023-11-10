@@ -42,6 +42,14 @@ PUT percolator-queries/_doc/tesla_model_3_alert
     }
   }
 }
+PUT percolator-queries/_doc/bmw_model_2_alert
+{
+  "query" : {
+    "query_string" : {
+      "query" : "brand:BMW AND model:330e AND price:<=40000"
+    }
+  }
+}
 
 PUT cars/_bulk?refresh
 { "index" : { "_id": "4" } }
@@ -68,6 +76,17 @@ GET percolator-queries/_search
       "field": "query",
       "index" : "cars",
       "id" : "4"
+    }
+  }
+}
+
+GET percolator-queries/_search
+{
+  "query": {
+    "percolate": {
+      "field": "query",
+      "index" : "cars",
+      "id" : "2"
     }
   }
 }
