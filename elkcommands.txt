@@ -57,6 +57,15 @@ GET _template
 filebeat.exe –modules mongodb -c filebeat.yml –e
 filebeat.exe -c filebeat.yml -e -d "*"
 
+# create user and roles
+docker container ls -a
+#access elastic container
+docker exec -it 5351c29d0567 /bin/bash
+#list the existing users
+bin/elasticsearch-users list
+#create the user with built in role
+bin/elasticsearch-users useradd eswaribala -p test@123 -r kibana_admin,logstash_admin
+
 
 
 
