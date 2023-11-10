@@ -54,6 +54,9 @@ PUT /order
 ```
 curl -H "Content-Type: application/json" -XPOST "http://localhost:9200/order/_bulk?pretty" --data-binary "@orders-bulk.json"
 ```
+#for xpack security
+curl -H "Content-Type: application/json" --user elastic:vignesh  -XPOST "http://localhost:9200/order/_bulk?pretty" --data-binary "@orders-bulk.json"
+
 
 Metric Queries
 
