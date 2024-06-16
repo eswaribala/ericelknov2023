@@ -12,8 +12,6 @@ logstash -f "path\filename" -e
 #docker logstash
 /opt/logstash/bin/logstash --path.data /tmp/logstash/data -e 'input { stdin { } }'
 
-
-
 # to view index details
 http://localhost:9200/_cat/indices?v
 #to rerieve all the documents from the index
@@ -23,6 +21,8 @@ H:\ELK\logstash-7.15.0-windows-x86_64\logstash-7.15.0\bin
 # after reaching bin folder execute the following commands
 #to view the list of plugins
 logstash-plugin list
+#using docker
+/opt/logstash/bin/logstash-plugin list
 #add new plugin to logstash
 logstash-plugin install logstash-output-mongodb
 
