@@ -9,6 +9,10 @@ http://localhost:9200/_cluster/health?pretty=true
 #create communication using environment to send data from logstash to elastic
 logstash -e  "input { stdin { } } output { stdout {} }"
 logstash -f "path\filename" -e
+#docker logstash
+/opt/logstash/bin/logstash --path.data /tmp/logstash/data -e 'input { stdin { } }'
+
+
 
 # to view index details
 http://localhost:9200/_cat/indices?v
