@@ -60,6 +60,9 @@ GET _template
 #command to run filebeat 
 filebeat.exe –modules mongodb -c filebeat.yml –e
 filebeat.exe -c filebeat.yml -e -d "*"
+#docker file beat
+filebeat -c /usr/share/filebeat/filebeat.yml -e -d "*"  --path.data /tmp/logstash/data  -strict.perms=false
+
 
 # create user and roles
 docker container ls -a
