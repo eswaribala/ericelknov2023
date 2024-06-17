@@ -11,7 +11,7 @@ logstash -e  "input { stdin { } } output { stdout {} }"
 logstash -f "path\filename" -e
 #docker logstash
 /opt/logstash/bin/logstash --path.data /tmp/logstash/data -e 'input { stdin { } }'
-
+/opt/logstash/bin/logstash --path.data /tmp/logstash/data -f '/usr/share/logstash/config/tmax115v1.conf'
 # to view index details
 http://localhost:9200/_cat/indices?v
 #to rerieve all the documents from the index
