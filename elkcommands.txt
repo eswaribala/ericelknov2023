@@ -1,5 +1,6 @@
 # it will index statistics
 http://localhost:9200/_nodes/stats/indices
+https://localhost:9200/_cat/indices?v
 #os,process statistics
 http://localhost:9200/_nodes/stats/os,process
 #process statistics
